@@ -62,26 +62,30 @@ void AFlipPlayerController::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
-
 	// find out which way is forward
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-	// get forward vector
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-
-	// get right vector 
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 	// add movement 
 	APawn* ControlledPawn = GetPawn();
-	ControlledPawn->AddMovementInput(ForwardDirection, MovementVector.Y);
-	ControlledPawn->AddMovementInput(RightDirection, MovementVector.X);
+
+	if (bMouseClick) {
+		ControlledPawn->AddMovementInput(ForwardDirection, MovementVector.Y/3);
+		ControlledPawn->AddMovementInput(RightDirection, MovementVector.X/3);
+	}
+	else {
+		ControlledPawn->AddMovementInput(ForwardDirection, MovementVector.Y);
+		ControlledPawn->AddMovementInput(RightDirection, MovementVector.X);
+	}
 }
 
 void AFlipPlayerController::OnInputStarted()
 {
 	StopMovement();
+	bMouseClick = true;
 }
 
 // Triggered every frame when the input is held down
@@ -99,7 +103,18 @@ void AFlipPlayerController::OnSetDestinationTriggered()
 	// If we hit a surface, cache the location
 	if (bHitSuccessful)
 	{
+		APawn* ControlledPawn = GetPawn();
+		FVector Direction = Hit.Location - ControlledPawn->GetActorLocation();
+		Direction.Z = 0;
+		Direction.Normalize();
+		FRotator TargetRotation = Direction.Rotation();
+		FRotator CurrentRotation = ControlledPawn->GetActorRotation();
+		FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, GetWorld()->GetDeltaSeconds(), 10.f); // 5.0f is the interpolation speed
+		ControlledPawn->SetActorRotation(TargetRotation);
+		//ControlledPawn->AddActorLocalRotation(TargetRotation);
+
 		CachedDestination = Hit.Location;
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
 	}
 	
 	// Move towards mouse pointer or touch
@@ -113,12 +128,13 @@ void AFlipPlayerController::OnSetDestinationTriggered()
 
 void AFlipPlayerController::OnSetDestinationReleased()
 {
+	bMouseClick = false;
 	// If it was a short press
 	if (FollowTime <= ShortPressThreshold)
 	{
 		// We move there and spawn some particles
 		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
+		
 	}
 
 	FollowTime = 0.f;
