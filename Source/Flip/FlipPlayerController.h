@@ -20,6 +20,10 @@ class AFlipPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+	UPROPERTY(EditDefaultsOnly)
+	class AFlipManager* FlipManager;
+
+
 public:
 	AFlipPlayerController();
 
@@ -42,6 +46,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* InteractAction;
+
 
 
 protected:
@@ -60,6 +67,8 @@ protected:
 
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
+
+	void Interact(const FInputActionValue& Value);
 
 private:
 	FVector CachedDestination;
