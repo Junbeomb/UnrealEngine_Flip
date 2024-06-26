@@ -12,10 +12,13 @@
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 
+#include "FlipCharacter.h"
+
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 AFlipPlayerController::AFlipPlayerController()
 {
+
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
 	CachedDestination = FVector::ZeroVector;
@@ -26,6 +29,10 @@ void AFlipPlayerController::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	ControlledPawn = GetPawn();
+	FlipCharacter = Cast<AFlipCharacter>(ControlledPawn);
+
 }
 
 void AFlipPlayerController::SetupInputComponent()
@@ -73,8 +80,7 @@ void AFlipPlayerController::Move(const FInputActionValue& Value)
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 	// add movement 
-	APawn* ControlledPawn = GetPawn();
-
+	
 	if (bMouseClick) {
 		ControlledPawn->AddMovementInput(ForwardDirection, MovementVector.Y/3);
 		ControlledPawn->AddMovementInput(RightDirection, MovementVector.X/3);
@@ -88,6 +94,8 @@ void AFlipPlayerController::Move(const FInputActionValue& Value)
 void AFlipPlayerController::Interact(const FInputActionValue& Value)
 {
 	UE_LOG(LogTemp, Warning, TEXT("PlayerController : 'E' Pressed "));
+
+	FlipCharacter->CallD_Reverse();
 }
 
 void AFlipPlayerController::OnInputStarted()
@@ -111,7 +119,6 @@ void AFlipPlayerController::OnSetDestinationTriggered()
 	// If we hit a surface, cache the location
 	if (bHitSuccessful)
 	{
-		APawn* ControlledPawn = GetPawn();
 		FVector Direction = Hit.Location - ControlledPawn->GetActorLocation();
 		Direction.Z = 0;
 		Direction.Normalize();
@@ -125,13 +132,6 @@ void AFlipPlayerController::OnSetDestinationTriggered()
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
 	}
 	
-	// Move towards mouse pointer or touch
-	//APawn* ControlledPawn = GetPawn();
-	//if (ControlledPawn != nullptr)
-	//{
-	//	FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
-	//	ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
-	//}
 }
 
 void AFlipPlayerController::OnSetDestinationReleased()

@@ -2,6 +2,7 @@
 
 
 #include "ReverseFloor.h"
+#include "Comp_Reverse.h"
 
 // Sets default values
 AReverseFloor::AReverseFloor()
@@ -11,6 +12,8 @@ AReverseFloor::AReverseFloor()
 
 	FloorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FloorMesh"));
 	RootComponent = FloorMesh;
+
+	Comp_Reverse = CreateDefaultSubobject<UComp_Reverse>(TEXT("Comp_Reverse"));
 
 }
 

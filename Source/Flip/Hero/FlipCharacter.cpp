@@ -49,3 +49,9 @@ void AFlipCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
 }
+
+void AFlipCharacter::CallD_Reverse()
+{
+	D_Reverse.Broadcast();
+	UE_LOG(LogTemp, Warning, TEXT("FlipCharacter : CallD_Reverse "));
+}

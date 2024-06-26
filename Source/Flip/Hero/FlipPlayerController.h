@@ -20,6 +20,9 @@ class AFlipPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+	APawn* ControlledPawn;
+
+	class AFlipCharacter* FlipCharacter;
 
 public:
 	AFlipPlayerController();

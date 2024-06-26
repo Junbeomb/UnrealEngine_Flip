@@ -14,6 +14,9 @@ class FLIP_API AReverseFloor : public AActor
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* FloorMesh;
 
+	UPROPERTY(EditAnywhere)
+	class UComp_Reverse* Comp_Reverse;
+
 	UFUNCTION()
 	void DoFlip();
 

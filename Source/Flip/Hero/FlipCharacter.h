@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "FlipCharacter.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(F_Reverse);
+
 UCLASS(Blueprintable)
 class AFlipCharacter : public ACharacter
 {
@@ -21,6 +23,13 @@ public:
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+
+public:
+
+	F_Reverse D_Reverse;
+
+	UFUNCTION()
+	void CallD_Reverse();
 
 private:
 	/** Top down camera */
