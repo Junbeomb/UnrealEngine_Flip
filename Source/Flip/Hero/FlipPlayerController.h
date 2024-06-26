@@ -20,9 +20,6 @@ class AFlipPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly)
-	class AFlipManager* FlipManager;
-
 
 public:
 	AFlipPlayerController();

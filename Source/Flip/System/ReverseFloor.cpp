@@ -1,30 +1,33 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FlipManager.h"
+#include "ReverseFloor.h"
 
 // Sets default values
-AFlipManager::AFlipManager()
+AReverseFloor::AReverseFloor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-}
+	FloorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FloorMesh"));
+	RootComponent = FloorMesh;
 
-void AFlipManager::DFlipExecute()
-{
-	D_Flip.Broadcast();
 }
 
 // Called when the game starts or when spawned
-void AFlipManager::BeginPlay()
+void AReverseFloor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+}
+
+void AReverseFloor::DoFlip()
+{
+	UE_LOG(LogTemp, Warning, TEXT("AReverseFloor : DoFlip"));
 }
 
 // Called every frame
-void AFlipManager::Tick(float DeltaTime)
+void AReverseFloor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 

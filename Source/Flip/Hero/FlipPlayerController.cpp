@@ -12,8 +12,6 @@
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 
-#include "FlipManager.h"
-
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 AFlipPlayerController::AFlipPlayerController()
@@ -53,7 +51,7 @@ void AFlipPlayerController::SetupInputComponent()
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AFlipPlayerController::Move);
 
-		// Moving
+		// Interact
 		EnhancedInputComponent->BindAction(InteractAction,ETriggerEvent::Completed, this, &AFlipPlayerController::Interact);
 
 	}
@@ -90,11 +88,6 @@ void AFlipPlayerController::Move(const FInputActionValue& Value)
 void AFlipPlayerController::Interact(const FInputActionValue& Value)
 {
 	UE_LOG(LogTemp, Warning, TEXT("PlayerController : 'E' Pressed "));
-
-	//FlipManager를 블프와 연결해주어야함. 아니면 component로 만들기!!
-	FlipManager = Cast<AFlipManager>(GetComponentByClass(AFlipManager::StaticClass()));
-	if (FlipManager)
-		FlipManager->DFlipExecute();
 }
 
 void AFlipPlayerController::OnInputStarted()

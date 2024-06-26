@@ -4,18 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "FlipFloor.generated.h"
+#include "ReverseFloor.generated.h"
 
 UCLASS()
-class FLIP_API AFlipFloor : public AActor
+class FLIP_API AReverseFloor : public AActor
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* FloorMesh;
-
-	UPROPERTY(EditDefaultsOnly)
-	class AFlipManager* FlipManager;
 
 	UFUNCTION()
 	void DoFlip();
@@ -23,7 +20,7 @@ class FLIP_API AFlipFloor : public AActor
 	
 public:	
 	// Sets default values for this actor's properties
-	AFlipFloor();
+	AReverseFloor();
 
 protected:
 	// Called when the game starts or when spawned
