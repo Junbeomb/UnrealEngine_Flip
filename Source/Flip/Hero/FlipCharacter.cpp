@@ -53,5 +53,10 @@ void AFlipCharacter::Tick(float DeltaSeconds)
 void AFlipCharacter::CallD_Reverse()
 {
 	D_Reverse.Broadcast();
+
+	GetCharacterMovement()->GravityScale = 0.f;
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	//GetCapsuleComponent()->SetEnableGravity(false);
 	UE_LOG(LogTemp, Warning, TEXT("FlipCharacter : CallD_Reverse "));
 }

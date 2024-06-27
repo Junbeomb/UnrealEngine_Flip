@@ -22,14 +22,14 @@ private: //Reverse
 	UPROPERTY(EditAnywhere)
 	bool isReverse;
 
-	float tickSumReverse;
-
-	UPROPERTY(EditAnywhere)
 	float reverseSpeed;
 
 public:	
 	// Sets default values for this component's properties
 	UComp_Reverse();
+
+	UPROPERTY(EditAnywhere)
+	float ReverseTime;
 
 protected:
 	// Called when the game starts
