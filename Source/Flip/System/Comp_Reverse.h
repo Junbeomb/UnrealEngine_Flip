@@ -19,6 +19,9 @@ private: //Reverse
 	UFUNCTION()
 	void ReverseStart();
 
+	UFUNCTION()
+	void ReverseEnd();
+
 	UPROPERTY(EditAnywhere)
 	bool isReverse;
 
@@ -27,9 +30,6 @@ private: //Reverse
 public:	
 	// Sets default values for this component's properties
 	UComp_Reverse();
-
-	UPROPERTY(EditAnywhere)
-	float ReverseTime;
 
 protected:
 	// Called when the game starts

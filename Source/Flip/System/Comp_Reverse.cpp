@@ -10,7 +10,6 @@ UComp_Reverse::UComp_Reverse()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	isReverse = false;
-	ReverseTime = 1.f;
 }
 
 
@@ -18,15 +17,23 @@ void UComp_Reverse::BeginPlay()
 {
 	Super::BeginPlay();
 
-	reverseSpeed = 180.f / ReverseTime;
 	Hero = Cast<AFlipCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
-	Hero->D_Reverse.AddUObject(this, &UComp_Reverse::ReverseStart);
+	Hero->Comp_ReverseCenter->D_ReverseStart.AddUObject(this, &UComp_Reverse::ReverseStart);
+	Hero->Comp_ReverseCenter->D_ReverseEnd.AddUObject(this, &UComp_Reverse::ReverseEnd);
+
+	reverseSpeed = Hero->Comp_ReverseCenter->GetReverseSpeed();
 }
 
 
 void UComp_Reverse::ReverseStart()
 {
 	isReverse = true;
+}
+
+void UComp_Reverse::ReverseEnd()
+{
+	isReverse = false;
+	//GetOwner()->SetActorRotation({ 0,0,180.f });
 }
 
 
@@ -36,16 +43,10 @@ void UComp_Reverse::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 	if (isReverse) {
 		float speed = reverseSpeed * DeltaTime;
-
+		UE_LOG(LogTemp, Warning, TEXT("%f"), reverseSpeed);
 		FRotator tempR =GetOwner()->GetActorRotation();
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *tempR.ToString());
-
-		GetOwner()->SetActorRotation({ 0,0,tempR.Roll + speed }); //Pitch,Yaw,Roll
-		
-		if (tempR.Roll + speed >= 180.f) {
-			GetOwner()->SetActorRotation({ 0,0,180.f });
-			isReverse = false;
-		}
+		//GetOwner()->SetActorRotation({ 0,0,tempR.Roll + speed }); //Pitch,Yaw,Roll
+		GetOwner()->SetActorRelativeRotation({ 0,0,tempR.Roll + speed }); //Pitch,Yaw,Roll
 	}
 
 }

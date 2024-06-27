@@ -93,7 +93,7 @@ void AFlipPlayerController::Move(const FInputActionValue& Value)
 
 void AFlipPlayerController::Interact(const FInputActionValue& Value)
 {
-	UE_LOG(LogTemp, Warning, TEXT("PlayerController : 'E' Pressed "));
+	//UE_LOG(LogTemp, Warning, TEXT("PlayerController : 'E' Pressed "));
 
 	FlipCharacter->CallD_Reverse();
 }

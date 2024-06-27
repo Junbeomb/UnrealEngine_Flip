@@ -11,6 +11,9 @@
 #include "Materials/Material.h"
 #include "Engine/World.h"
 
+
+
+
 AFlipCharacter::AFlipCharacter()
 {
 	// Set size for player capsule
@@ -43,6 +46,12 @@ AFlipCharacter::AFlipCharacter()
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+
+	//ReverseReverseReverse
+	Comp_ReverseCenter = CreateDefaultSubobject<UComp_ReverseCenter>(TEXT("Comp_ReverseCenter"));
+	Comp_ReverseCenter->D_ReverseStart.AddUObject(this, &AFlipCharacter::ReverseStart);
+	Comp_ReverseCenter->D_ReverseEnd.AddUObject(this, &AFlipCharacter::ReverseEnd);
+
 }
 
 void AFlipCharacter::Tick(float DeltaSeconds)
@@ -50,13 +59,28 @@ void AFlipCharacter::Tick(float DeltaSeconds)
     Super::Tick(DeltaSeconds);
 }
 
+
 void AFlipCharacter::CallD_Reverse()
 {
-	D_Reverse.Broadcast();
+	Comp_ReverseCenter->CallReverse();
+}
 
+void AFlipCharacter::ReverseStart()
+{
+	HeroState = EHeroStatus::Reversing;
+
+	AddActorLocalOffset({ 0,0,200.f });
 	GetCharacterMovement()->GravityScale = 0.f;
+	GetCharacterMovement()->SetMovementMode(MOVE_None);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	//GetCapsuleComponent()->SetEnableGravity(false);
 	UE_LOG(LogTemp, Warning, TEXT("FlipCharacter : CallD_Reverse "));
+}
+
+void AFlipCharacter::ReverseEnd()
+{
+	GetCharacterMovement()->GravityScale = 1.0f;
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	UE_LOG(LogTemp, Warning, TEXT("FlipCharacter : ReverseEnd"));
 }

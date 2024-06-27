@@ -4,14 +4,31 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+#include "E_HeroStatus.h"
+#include "Comp_ReverseCenter.h"
+
 #include "FlipCharacter.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(F_Reverse);
 
 UCLASS(Blueprintable)
 class AFlipCharacter : public ACharacter
 {
 	GENERATED_BODY()
+
+	EHeroStatus HeroState;
+
+
+
+public:
+
+	UPROPERTY(EditAnywhere)
+	UComp_ReverseCenter* Comp_ReverseCenter;
+
+	UFUNCTION()
+	void ReverseStart();
+	UFUNCTION()
+	void ReverseEnd();
 
 public:
 	AFlipCharacter();
@@ -25,8 +42,6 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
 public:
-
-	F_Reverse D_Reverse;
 
 	UFUNCTION()
 	void CallD_Reverse();
