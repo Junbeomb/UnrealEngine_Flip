@@ -1,10 +1,13 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+
+#include "Components/TimelineComponent.h"
+
 #include "ReverseFloor.generated.h"
+
 
 UCLASS()
 class FLIP_API AReverseFloor : public AActor
@@ -14,23 +17,50 @@ class FLIP_API AReverseFloor : public AActor
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* FloorMesh;
 
-	UPROPERTY(EditAnywhere)
-	class UComp_Reverse* Comp_Reverse;
+	UMaterialInstanceDynamic* DMI;
 
-	UFUNCTION()
-	void DoFlip();
+	class AReverseCenter* RCenter;
 
-	
-public:	
-	// Sets default values for this actor's properties
+public:
 	AReverseFloor();
 
+private: //Reverse
+
+	bool isReverse;
+
+	float reverseSpeed;
+
+	UFUNCTION()
+	void ReverseStart();
+
+	UFUNCTION()
+	void ReverseEnd();
+
+
+
+
+private: //Timeline
+
+	UPROPERTY(EditAnywhere, Category = Timeline)
+	UTimelineComponent* MaterialTimeline;
+
+	//MaterialTimeline
+		//그래프
+	UPROPERTY(EditAnywhere, Category = Timeline);
+	UCurveFloat* MaterialCurve;
+	//업데이트
+	FOnTimelineFloat MaterialTimelineCallback;
+	UFUNCTION()
+	void MaterialTimelineUpdate(float Value);
+	// 종료시
+	FOnTimelineEvent MaterialTimelineFinishedCallback;
+	UFUNCTION()
+	void MaterialTimelineFinish();
+
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 };

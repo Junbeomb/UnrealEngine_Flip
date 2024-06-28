@@ -6,7 +6,6 @@
 #include "GameFramework/Character.h"
 
 #include "E_HeroStatus.h"
-#include "Comp_ReverseCenter.h"
 
 #include "FlipCharacter.generated.h"
 
@@ -18,13 +17,9 @@ class AFlipCharacter : public ACharacter
 
 	EHeroStatus HeroState;
 
-
+	class AReverseCenter* RCenter;
 
 public:
-
-	UPROPERTY(EditAnywhere)
-	UComp_ReverseCenter* Comp_ReverseCenter;
-
 	UFUNCTION()
 	void ReverseStart();
 	UFUNCTION()
@@ -42,6 +37,8 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
 public:
+
+	virtual void BeginPlay() override;
 
 	UFUNCTION()
 	void CallD_Reverse();

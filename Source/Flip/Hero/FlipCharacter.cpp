@@ -12,6 +12,8 @@
 #include "Engine/World.h"
 
 
+#include "../System/ReverseCenter.h"
+
 
 
 AFlipCharacter::AFlipCharacter()
@@ -47,11 +49,16 @@ AFlipCharacter::AFlipCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
-	//ReverseReverseReverse
-	Comp_ReverseCenter = CreateDefaultSubobject<UComp_ReverseCenter>(TEXT("Comp_ReverseCenter"));
-	Comp_ReverseCenter->D_ReverseStart.AddUObject(this, &AFlipCharacter::ReverseStart);
-	Comp_ReverseCenter->D_ReverseEnd.AddUObject(this, &AFlipCharacter::ReverseEnd);
+}
 
+void AFlipCharacter::BeginPlay()
+{
+	// Call the base class  
+	Super::BeginPlay();
+
+	RCenter = Cast<AReverseCenter>(UGameplayStatics::GetActorOfClass(GetWorld(), AReverseCenter::StaticClass()));
+	RCenter->D_ReverseStart.AddUObject(this, &AFlipCharacter::ReverseStart);
+	RCenter->D_ReverseEnd.AddUObject(this, &AFlipCharacter::ReverseEnd);
 }
 
 void AFlipCharacter::Tick(float DeltaSeconds)
@@ -62,16 +69,16 @@ void AFlipCharacter::Tick(float DeltaSeconds)
 
 void AFlipCharacter::CallD_Reverse()
 {
-	Comp_ReverseCenter->CallReverse();
+	RCenter->CallReverse();
 }
 
 void AFlipCharacter::ReverseStart()
 {
 	HeroState = EHeroStatus::Reversing;
 
-	AddActorLocalOffset({ 0,0,200.f });
+	LaunchCharacter({ 0,0,100.f }, true, true);
 	GetCharacterMovement()->GravityScale = 0.f;
-	GetCharacterMovement()->SetMovementMode(MOVE_None);
+	GetCharacterMovement()->SetMovementMode(MOVE_Flying);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	UE_LOG(LogTemp, Warning, TEXT("FlipCharacter : CallD_Reverse "));
