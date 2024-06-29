@@ -83,12 +83,11 @@ void AReverseFloor::Tick(float DeltaTime)
 
 }
 
-
+//µÚÁý±â
 void AReverseFloor::RTimelineUpdate(float Value)
 {
 	SetActorRotation({ 0,0,startRotation + Value * 180.f });
 }
-
 void AReverseFloor::RTimelineFinish()
 {
 }
