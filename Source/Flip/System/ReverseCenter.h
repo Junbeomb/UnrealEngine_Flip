@@ -9,6 +9,15 @@
 
 #include "ReverseCenter.generated.h"
 
+
+UENUM(BlueprintType)
+enum class ERCenter : uint8
+{
+	Real UMETA(DisplayName = "Real"),
+	Reversing UMETA(DisplayName = "Reversing"),
+	Hell UMETA(DisplayName = "Hell")
+};
+
 DECLARE_MULTICAST_DELEGATE(F_Reverse);
 UCLASS()
 class FLIP_API AReverseCenter : public AActor
@@ -25,8 +34,14 @@ class FLIP_API AReverseCenter : public AActor
 	bool reverseFlag;
 	float reversingDeltaSum;
 
+	float reverseCallCoolTime;
+
+
 public:
 	AReverseCenter();
+
+	ERCenter E_RCenter;
+	ERCenter E_RCenter_b;
 
 	F_Reverse D_ReverseStart;
 	F_Reverse D_ReverseEnd;
@@ -37,12 +52,9 @@ public:
 
 	float GetReverseTime();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+protected:
+	virtual void BeginPlay() override;
 
 };

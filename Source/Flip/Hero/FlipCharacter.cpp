@@ -57,8 +57,10 @@ void AFlipCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	RCenter = Cast<AReverseCenter>(UGameplayStatics::GetActorOfClass(GetWorld(), AReverseCenter::StaticClass()));
-	RCenter->D_ReverseStart.AddUObject(this, &AFlipCharacter::ReverseStart);
-	RCenter->D_ReverseEnd.AddUObject(this, &AFlipCharacter::ReverseEnd);
+	if (RCenter) {
+		RCenter->D_ReverseStart.AddUObject(this, &AFlipCharacter::ReverseStart);
+		RCenter->D_ReverseEnd.AddUObject(this, &AFlipCharacter::ReverseEnd);
+	}
 }
 
 void AFlipCharacter::Tick(float DeltaSeconds)
@@ -76,7 +78,7 @@ void AFlipCharacter::ReverseStart()
 {
 	HeroState = EHeroStatus::Reversing;
 
-	LaunchCharacter({ 0,0,100.f }, true, true);
+	LaunchCharacter({ 0,0,100.f/RCenter->GetReverseTime()}, true, true);
 	GetCharacterMovement()->GravityScale = 0.f;
 	GetCharacterMovement()->SetMovementMode(MOVE_Flying);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);

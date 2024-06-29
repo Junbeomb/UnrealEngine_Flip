@@ -19,43 +19,71 @@ class FLIP_API AReverseFloor : public AActor
 
 	UMaterialInstanceDynamic* DMI;
 
-	class AReverseCenter* RCenter;
+	class ADirectionalLight* DLight;
+	UPROPERTY(EditAnywhere)
+	FLinearColor LightColor_Real;
+	UPROPERTY(EditAnywhere)
+	FLinearColor LightColor_Hell;
+	class ASkyAtmosphere* SkyAtmos;
+	UPROPERTY(EditAnywhere)
+	FLinearColor Atmos_Real;
+	UPROPERTY(EditAnywhere)
+	FLinearColor Atmos_Hell;
 
 public:
 	AReverseFloor();
 
 private: //Reverse
+	class AReverseCenter* RCenter;
 
 	bool isReverse;
 
 	float reverseSpeed;
 
-	UFUNCTION()
 	void ReverseStart();
 
-	UFUNCTION()
 	void ReverseEnd();
 
-
-
+	float startRotation;
 
 private: //Timeline
 
 	UPROPERTY(EditAnywhere, Category = Timeline)
-	UTimelineComponent* MaterialTimeline;
+	UTimelineComponent* AttributeTimeline;
 
-	//MaterialTimeline
+	//AttributeTimeline
 		//그래프
 	UPROPERTY(EditAnywhere, Category = Timeline);
 	UCurveFloat* MaterialCurve;
+	UPROPERTY(EditAnywhere, Category = Timeline);
+	UCurveFloat* LightCurve;
 	//업데이트
 	FOnTimelineFloat MaterialTimelineCallback;
 	UFUNCTION()
 	void MaterialTimelineUpdate(float Value);
-	// 종료시
-	FOnTimelineEvent MaterialTimelineFinishedCallback;
+	FOnTimelineFloat LightTimelineCallback;
 	UFUNCTION()
-	void MaterialTimelineFinish();
+	void LightTimelineUpdate(float Value);
+	// 종료시
+	FOnTimelineEvent AttributeTimelineFinishedCallback;
+	UFUNCTION()
+	void AttributeTimelineFinish();
+
+	UPROPERTY(EditAnywhere, Category = Timeline)
+	UTimelineComponent* RTimeline;
+
+	//RTimeline
+		//그래프
+	UPROPERTY(EditAnywhere, Category = Timeline);
+	UCurveFloat* RCurve;
+	//업데이트
+	FOnTimelineFloat RTimelineCallback;
+	UFUNCTION()
+	void RTimelineUpdate(float Value);
+	// 종료시
+	FOnTimelineEvent RTimelineFinishedCallback;
+	UFUNCTION()
+	void RTimelineFinish();
 
 protected:
 	virtual void BeginPlay() override;
