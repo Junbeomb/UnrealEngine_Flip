@@ -56,9 +56,6 @@ void ABaseActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (isReverse) {
-
-	}
 
 }
 

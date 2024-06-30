@@ -11,6 +11,31 @@ class FLIP_API ABaseMonster : public ACharacter
 {
 	GENERATED_BODY()
 
+	class UCharacterMovementComponent* MovementComponent;
+
+private://AI
+
+	class AAIC_Base* AIC_Base;
+
+public://AI
+
+	UPROPERTY(EditAnywhere)
+	class UBehaviorTree* BehaviorTree;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AAIController> AIControllerChoice;
+
+private: //Reverse
+	class AReverseCenter* RCenter;
+	class AReverseFloor* RFloor;
+
+	bool isReverse;
+
+	void ReverseStart();
+	void ReverseEnd();
+
+	FTimerHandle DelayTimerHandle;
+
 public:
 	// Sets default values for this character's properties
 	ABaseMonster();
