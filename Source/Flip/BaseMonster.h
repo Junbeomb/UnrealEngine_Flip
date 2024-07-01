@@ -36,6 +36,10 @@ private: //Reverse
 
 	FTimerHandle DelayTimerHandle;
 
+	float deltaSum;
+	FVector rememR;
+
+
 public:
 	// Sets default values for this character's properties
 	ABaseMonster();

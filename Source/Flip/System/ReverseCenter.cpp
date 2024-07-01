@@ -35,6 +35,7 @@ void AReverseCenter::CallReverse()
 
 	E_RCenter_b = E_RCenter;
 	E_RCenter = ERCenter::Reversing;
+
 	D_ReverseStart.Broadcast();
 }
 
@@ -45,7 +46,7 @@ void AReverseCenter::Tick(float DeltaTime)
 	//ReverseTime 만큼 뒤집는 시간
 	if (E_RCenter == ERCenter::Reversing) {
 		reversingDeltaSum += DeltaTime;
-		if (reversingDeltaSum >= ReverseTime) {
+		if (reversingDeltaSum > ReverseTime) {
 			reversingDeltaSum = 0.f;
 
 			switch (E_RCenter_b) {

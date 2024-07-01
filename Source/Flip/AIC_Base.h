@@ -25,12 +25,16 @@ class FLIP_API AAIC_Base : public AAIController
 	UFUNCTION()
 	void SetStateAsAttacking(AActor* ATarget, bool useLastKnownAttackTarget);
 
+
+
 	UFUNCTION()
 	void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
 
 public:
 	AAIC_Base();
 
+	UFUNCTION()
+	void SetStateAsHell();
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 };

@@ -56,9 +56,13 @@ void AAIC_Base::SetStateAsAttacking(AActor* ATarget, bool useLastKnownAttackTarg
 
 	GetBlackboardComponent()->SetValueAsObject(FName("TargetActor"), NewAttackTarget);
 
-
 	//Å¸°Ù ¼³Á¤
 	AttackTarget = NewAttackTarget;
+}
+
+void AAIC_Base::SetStateAsHell()
+{
+	GetBlackboardComponent()->SetValueAsObject(FName("TargetActor"), nullptr);
 }
 
 void AAIC_Base::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
