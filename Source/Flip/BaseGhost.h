@@ -11,6 +11,8 @@ class FLIP_API ABaseGhost : public ACharacter
 {
 	GENERATED_BODY()
 
+	class UCharacterMovementComponent* MovementComponent;
+
 public:
 	// Sets default values for this character's properties
 	ABaseGhost();
@@ -18,6 +20,24 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+private:
+	UPROPERTY(EditAnywhere)
+	class ABaseMonster* ChoiceLinkMonster;
+
+private: //Reverse
+	class AReverseCenter* RCenter;
+	class AReverseFloor* RFloor;
+
+	bool isReverse;
+
+	void ReverseStart();
+	void ReverseEnd();
+
+	FTimerHandle DelayTimerHandle;
+
+	float deltaSum;
+	FVector rememR;
 
 public:	
 	// Called every frame
