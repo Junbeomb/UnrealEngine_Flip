@@ -39,6 +39,9 @@ private: //Reverse
 	float deltaSum;
 	FVector rememR;
 
+private: //Ghost
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABaseGhost> LinkGhost;
 
 public:
 	// Sets default values for this character's properties

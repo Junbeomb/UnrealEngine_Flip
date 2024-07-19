@@ -69,7 +69,9 @@ void ABaseGhost::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if(ChoiceLinkMonster)
-		SetActorLocation(ChoiceLinkMonster->GetActorLocation());
+	if (LinkMonster) {
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *LinkMonster->GetActorLocation().ToString());
+		SetActorLocation({ LinkMonster->GetActorLocation().X,LinkMonster->GetActorLocation().Y,GetActorLocation().Z });
+	}
 }
 

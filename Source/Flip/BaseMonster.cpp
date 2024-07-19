@@ -14,6 +14,8 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
+#include "BaseGhost.h"
+
 
 // Sets default values
 ABaseMonster::ABaseMonster()
@@ -39,6 +41,22 @@ void ABaseMonster::BeginPlay()
 		RCenter->D_ReverseEnd.AddUObject(this, &ABaseMonster::ReverseEnd);
 	}
 	RFloor = Cast<AReverseFloor>(UGameplayStatics::GetActorOfClass(GetWorld(), AReverseFloor::StaticClass()));
+
+	//Ghost생성
+	if (LinkGhost) {
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *GetActorLocation().ToString());
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		ABaseGhost* SpawnedGhost = GetWorld()->SpawnActorDeferred<ABaseGhost>(LinkGhost, GetActorTransform(), this, nullptr, ActorSpawnParams.SpawnCollisionHandlingOverride);
+		if (SpawnedGhost) {
+			SpawnedGhost->LinkMonster = this;
+			FVector Location = { GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z - 300.f };
+			FRotator Rotation = GetActorRotation();
+			FVector Scale = { 1,1,1 };
+			FTransform Transform = FTransform(Rotation, Location, Scale);
+			UGameplayStatics::FinishSpawningActor(SpawnedGhost, Transform);
+		}
+	}
 
 	//aicontroller 설정
 	if (AIControllerChoice) {

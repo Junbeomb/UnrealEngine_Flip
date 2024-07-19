@@ -17,13 +17,17 @@ public:
 	// Sets default values for this character's properties
 	ABaseGhost();
 
+	UPROPERTY()
+	class ABaseMonster* LinkMonster;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(EditAnywhere)
-	class ABaseMonster* ChoiceLinkMonster;
+	TSubclassOf<class ABaseMonster> ChoiceLinkMonster;
+
+
 
 private: //Reverse
 	class AReverseCenter* RCenter;
