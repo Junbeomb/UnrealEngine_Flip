@@ -9,23 +9,27 @@
 #include "System/ReverseCenter.h"
 #include "System/ReverseFloor.h"
 
+#include "AIC_GhostBase.h"
+#include "AIController.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
+
 #include "BaseMonster.h"
 
-// Sets default values
 ABaseGhost::ABaseGhost()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	MovementComponent =GetCharacterMovement();
 
 	MovementComponent->SetGravityDirection({ 0, 0,1 });
 	MovementComponent->bUseControllerDesiredRotation = true;
 
-
+	GetMesh()->SetVisibility(false);
 }
 
-// Called when the game starts or when spawned
+
 void ABaseGhost::BeginPlay()
 {
 	Super::BeginPlay();
@@ -37,7 +41,13 @@ void ABaseGhost::BeginPlay()
 	}
 	RFloor = Cast<AReverseFloor>(UGameplayStatics::GetActorOfClass(GetWorld(), AReverseFloor::StaticClass()));
 
-	
+
+	//aicontroller ¼³Á¤
+	if (AIControllerChoice) {
+		AIC_Base = Cast<AAIC_GhostBase>(AIControllerChoice);
+		AIControllerClass = AIControllerChoice;
+		AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	}
 }
 
 void ABaseGhost::ReverseStart()
@@ -47,34 +57,28 @@ void ABaseGhost::ReverseStart()
 	this->AttachToActor(RFloor, FAttachmentTransformRules::KeepWorldTransform);
 
 	rememR = GetGravityDirection();
-
 }
 
 void ABaseGhost::ReverseEnd()
 {
-
 	MovementComponent->GravityScale = 1.f;
 	MovementComponent->ResetMoveState();
 	MovementComponent->MaxAcceleration = 2048.f;
 	MovementComponent->SetGravityDirection({ 0, 0, GetGravityDirection().Z * -1 });
 
-	/*if (RCenter->E_RCenter == ERCenter::Real) {
+	if (RCenter->E_RCenter == ERCenter::Real) {
 		GetMesh()->SetVisibility(false);
 	}
 	else if (RCenter->E_RCenter == ERCenter::Hell) {
 		GetMesh()->SetVisibility(true);
-	}*/
+	}
+
+	SetActorLocation({ LinkMonster->GetActorLocation().X,LinkMonster->GetActorLocation().Y, LinkMonster->GetActorLocation().Z * -1 });
 }
 
 // Called every frame
 void ABaseGhost::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (LinkMonster) {
-		//UE_LOG(LogTemp, Warning, TEXT("%s"), *LinkMonster->GetActorLocation().ToString());
-		
-		//SetActorLocation({ LinkMonster->GetActorLocation().X,LinkMonster->GetActorLocation().Y,LinkMonster->GetActorLocation().Z * -1 });
-	}
 }
 

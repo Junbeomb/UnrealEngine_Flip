@@ -13,7 +13,19 @@ class FLIP_API ABaseGhost : public ACharacter
 
 	class UCharacterMovementComponent* MovementComponent;
 
-public:
+private://AI
+
+	class AAIC_GhostBase* AIC_Base;
+
+public://AI
+
+	UPROPERTY(EditAnywhere)
+	class UBehaviorTree* BehaviorTree;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AAIController> AIControllerChoice;
+
+public: //Link
 	ABaseGhost();
 	UPROPERTY(EditAnywhere)
 	class ABaseMonster* LinkMonster;

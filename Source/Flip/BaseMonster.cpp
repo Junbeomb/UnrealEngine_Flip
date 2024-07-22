@@ -91,10 +91,8 @@ void ABaseMonster::ReverseEnd()
 	}, 1.f, false);
 
 	//UE_LOG(LogTemp, Warning, TEXT("%s"), *GetActorRotation().ToString());
-
 	deltaSum = 0.f;
 	isReverse = false;
-
 }
 
 // Called every frame
@@ -112,7 +110,6 @@ void ABaseMonster::Tick(float DeltaTime)
 			//isReverse = false;
 			//deltaSum = 0.f;
 			//UE_LOG(LogTemp, Warning, TEXT("%s"), *GetGravityDirection().ToString());
-			
 		}
 	}
 }
