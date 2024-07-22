@@ -40,6 +40,11 @@ void AAIC_GhostBase::OnPossess(APawn* InPawn)
 	if (IsValid(BGhost->BehaviorTree)) {
 		RunBehaviorTree(BGhost->BehaviorTree);
 	}
+
+	//LinkMonster 블랙 보드에도 전달
+	//AActor* tempActor = Cast<AActor>(BGhost->LinkMonster);
+	GetBlackboardComponent()->SetValueAsObject(FName("LinkMonsterActor"), BGhost->LinkMonster);
+
 }
 
 void AAIC_GhostBase::SetStateAsAttacking(AActor* ATarget, bool useLastKnownAttackTarget)

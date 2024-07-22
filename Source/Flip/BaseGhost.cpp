@@ -25,6 +25,7 @@ ABaseGhost::ABaseGhost()
 
 	MovementComponent->SetGravityDirection({ 0, 0,1 });
 	MovementComponent->bUseControllerDesiredRotation = true;
+	MovementComponent->MaxWalkSpeed = 100.f;
 
 	GetMesh()->SetVisibility(false);
 }
@@ -44,7 +45,7 @@ void ABaseGhost::BeginPlay()
 
 	//aicontroller ¼³Á¤
 	if (AIControllerChoice) {
-		AIC_Base = Cast<AAIC_GhostBase>(AIControllerChoice);
+		AIC_GhostBase = Cast<AAIC_GhostBase>(AIControllerChoice);
 		AIControllerClass = AIControllerChoice;
 		AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	}

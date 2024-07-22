@@ -15,7 +15,7 @@ class FLIP_API ABaseGhost : public ACharacter
 
 private://AI
 
-	class AAIC_GhostBase* AIC_Base;
+	class AAIC_GhostBase* AIC_GhostBase;
 
 public://AI
 
@@ -27,8 +27,9 @@ public://AI
 
 public: //Link
 	ABaseGhost();
+
 	UPROPERTY(EditAnywhere)
-	class ABaseMonster* LinkMonster;
+	AActor* LinkMonster;
 
 protected:
 	virtual void BeginPlay() override;
