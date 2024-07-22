@@ -14,19 +14,12 @@ class FLIP_API ABaseGhost : public ACharacter
 	class UCharacterMovementComponent* MovementComponent;
 
 public:
-	// Sets default values for this character's properties
 	ABaseGhost();
-
-	UPROPERTY()
-	class ABaseMonster* LinkMonster;
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-private:
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class ABaseMonster> ChoiceLinkMonster;
+	class ABaseMonster* LinkMonster;
 
+protected:
+	virtual void BeginPlay() override;
 
 
 private: //Reverse

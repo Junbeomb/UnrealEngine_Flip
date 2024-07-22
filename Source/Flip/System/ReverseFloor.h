@@ -30,6 +30,8 @@ class FLIP_API AReverseFloor : public AActor
 	UPROPERTY(EditAnywhere)
 	FLinearColor Atmos_Hell;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABaseGhost> TestGhost;
 public:
 	AReverseFloor();
 

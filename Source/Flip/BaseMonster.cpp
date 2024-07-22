@@ -6,6 +6,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Math/UnrealMathUtility.h"
 
+#include "Blueprint/AIBlueprintHelperLibrary.h"
+
 #include "System/ReverseCenter.h"
 #include "System/ReverseFloor.h"
 
@@ -43,18 +45,16 @@ void ABaseMonster::BeginPlay()
 	RFloor = Cast<AReverseFloor>(UGameplayStatics::GetActorOfClass(GetWorld(), AReverseFloor::StaticClass()));
 
 	//Ghost»ý¼º
-	if (LinkGhost) {
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *GetActorLocation().ToString());
-		FActorSpawnParameters ActorSpawnParams;
-		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		ABaseGhost* SpawnedGhost = GetWorld()->SpawnActorDeferred<ABaseGhost>(LinkGhost, GetActorTransform(), this, nullptr, ActorSpawnParams.SpawnCollisionHandlingOverride);
-		if (SpawnedGhost) {
-			SpawnedGhost->LinkMonster = this;
-			FVector Location = { GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z - 300.f };
-			FRotator Rotation = GetActorRotation();
-			FVector Scale = { 1,1,1 };
-			FTransform Transform = FTransform(Rotation, Location, Scale);
-			UGameplayStatics::FinishSpawningActor(SpawnedGhost, Transform);
+	if (LinkGhost && GhostBehaviorTree) {
+		
+		FVector Location = { GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z - 500.f };
+		FRotator Rotation = GetActorRotation();
+		APawn* TempGhost = UAIBlueprintHelperLibrary::SpawnAIFromClass(GetWorld(), LinkGhost, GhostBehaviorTree, Location, Rotation, true);
+		ABaseGhost* Ghost = Cast<ABaseGhost>(TempGhost);
+
+		if (Ghost) {
+			//UE_LOG(LogTemp, Warning, TEXT("%s"), *GetActorLocation().ToString());
+			Ghost->LinkMonster = this;
 		}
 	}
 

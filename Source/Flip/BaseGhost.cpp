@@ -17,17 +17,19 @@ ABaseGhost::ABaseGhost()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	MovementComponent = GetCharacterMovement();
+	MovementComponent =GetCharacterMovement();
 
 	MovementComponent->SetGravityDirection({ 0, 0,1 });
 	MovementComponent->bUseControllerDesiredRotation = true;
+
+
 }
 
 // Called when the game starts or when spawned
 void ABaseGhost::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	RCenter = Cast<AReverseCenter>(UGameplayStatics::GetActorOfClass(GetWorld(), AReverseCenter::StaticClass()));
 	if (RCenter) {
 		RCenter->D_ReverseStart.AddUObject(this, &ABaseGhost::ReverseStart);
@@ -71,7 +73,8 @@ void ABaseGhost::Tick(float DeltaTime)
 
 	if (LinkMonster) {
 		//UE_LOG(LogTemp, Warning, TEXT("%s"), *LinkMonster->GetActorLocation().ToString());
-		SetActorLocation({ LinkMonster->GetActorLocation().X,LinkMonster->GetActorLocation().Y,GetActorLocation().Z });
+		
+		//SetActorLocation({ LinkMonster->GetActorLocation().X,LinkMonster->GetActorLocation().Y,LinkMonster->GetActorLocation().Z * -1 });
 	}
 }
 

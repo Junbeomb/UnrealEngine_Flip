@@ -5,9 +5,12 @@
 #include "Components/DirectionalLightComponent.h"
 #include "Components/SkyAtmosphereComponent.h"
 #include "Math/UnrealMathUtility.h"
+#include "AIController.h"
 //#include "C:\Program Files\Epic Games\UE_5.4\Engine\Source\Runtime\Engine\Classes\Components\SkyAtmosphereComponent.h"
 
 #include "ReverseCenter.h"
+
+#include "../BaseGhost.h"
 
 
 AReverseFloor::AReverseFloor()
@@ -44,13 +47,13 @@ void AReverseFloor::BeginPlay()
 
 	DLight = Cast<ADirectionalLight>(UGameplayStatics::GetActorOfClass(GetWorld(), ADirectionalLight::StaticClass()));
 	SkyAtmos = Cast<ASkyAtmosphere>(UGameplayStatics::GetActorOfClass(GetWorld(), ASkyAtmosphere::StaticClass()));
-	
 }
 
 void AReverseFloor::ReverseStart()
 {
 	isReverse = true;
 	startRotation = GetActorRotation().Roll;
+
 	//RTimeline
 	if (RCurve) {
 		RTimeline->AddInterpFloat(RCurve, RTimelineCallback, FName("RTimeline"));

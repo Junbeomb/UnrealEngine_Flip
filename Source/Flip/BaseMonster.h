@@ -42,6 +42,8 @@ private: //Reverse
 private: //Ghost
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ABaseGhost> LinkGhost;
+	UPROPERTY(EditAnywhere)
+	class UBehaviorTree* GhostBehaviorTree;
 
 public:
 	// Sets default values for this character's properties
