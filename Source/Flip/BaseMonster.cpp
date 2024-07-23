@@ -30,6 +30,7 @@ ABaseMonster::ABaseMonster()
 
 	MovementComponent->SetGravityDirection({ 0, 0,-1 });
 	MovementComponent->bUseControllerDesiredRotation = true;
+	MovementComponent->MaxWalkSpeed = 200.f;
 }
 
 // Called when the game starts or when spawned
@@ -99,6 +100,8 @@ void ABaseMonster::ReverseEnd()
 void ABaseMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	Speed = MovementComponent->Velocity.Size();
 
 	//ReverseEnd에서 하지 않는 이유는 바뀌는 동작이 보임. 돌아가는 중간에 바꿔야함.
 	if (isReverse &&RCenter->E_RCenter_b == ERCenter::Hell) { 

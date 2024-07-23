@@ -45,16 +45,14 @@ private: //Ghost
 	UPROPERTY(EditAnywhere)
 	class UBehaviorTree* GhostBehaviorTree;
 
-public:
-	// Sets default values for this character's properties
+public: //Basic
 	ABaseMonster();
 
-protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+public: //Movement
+	UPROPERTY(BlueprintReadOnly)
+	float Speed;
 };
