@@ -5,10 +5,10 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "Perception/AIPerceptionTypes.h"
-#include "AIC_Base.generated.h"
+#include "AIC_MonsterBase.generated.h"
 
 UCLASS()
-class FLIP_API AAIC_Base : public AAIController
+class FLIP_API AAIC_MonsterBase : public AAIController
 {
 	GENERATED_BODY()
 	
@@ -25,13 +25,11 @@ class FLIP_API AAIC_Base : public AAIController
 	UFUNCTION()
 	void SetStateAsAttacking(AActor* ATarget, bool useLastKnownAttackTarget);
 
-
-
 	UFUNCTION()
 	void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
 
 public:
-	AAIC_Base();
+	AAIC_MonsterBase();
 
 	UFUNCTION()
 	void SetStateAsHell();

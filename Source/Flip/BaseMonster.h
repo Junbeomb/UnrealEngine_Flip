@@ -15,7 +15,7 @@ class FLIP_API ABaseMonster : public ACharacter
 
 private://AI
 
-	class AAIC_Base* AIC_Base;
+	class AAIC_MonsterBase* AIC_Base;
 
 public://AI
 
@@ -52,7 +52,4 @@ public: //Basic
 
 	virtual void Tick(float DeltaTime) override;
 
-public: //Movement
-	UPROPERTY(BlueprintReadOnly)
-	float Speed;
 };

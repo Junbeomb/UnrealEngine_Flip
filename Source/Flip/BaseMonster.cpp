@@ -11,7 +11,7 @@
 #include "System/ReverseCenter.h"
 #include "System/ReverseFloor.h"
 
-#include "AIC_Base.h"
+#include "AIC_MonsterBase.h"
 #include "AIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -61,7 +61,7 @@ void ABaseMonster::BeginPlay()
 
 	//aicontroller 설정
 	if (AIControllerChoice) {
-		AIC_Base = Cast<AAIC_Base>(AIControllerChoice);
+		AIC_Base = Cast<AAIC_MonsterBase>(AIControllerChoice);
 		AIControllerClass = AIControllerChoice;
 		AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	}
@@ -100,8 +100,6 @@ void ABaseMonster::ReverseEnd()
 void ABaseMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	Speed = MovementComponent->Velocity.Size();
 
 	//ReverseEnd에서 하지 않는 이유는 바뀌는 동작이 보임. 돌아가는 중간에 바꿔야함.
 	if (isReverse &&RCenter->E_RCenter_b == ERCenter::Hell) { 

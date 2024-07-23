@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AIC_Base.h"
+#include "AIC_MonsterBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -16,7 +16,7 @@
 #include "Hero/FlipCharacter.h"
 
 
-AAIC_Base::AAIC_Base() {
+AAIC_MonsterBase::AAIC_MonsterBase() {
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComponent"));
 
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightConfig"));
@@ -30,10 +30,10 @@ AAIC_Base::AAIC_Base() {
 	AIPerceptionComponent->ConfigureSense(*SightConfig);
 	AIPerceptionComponent->SetDominantSense(UAISense_Sight::StaticClass());
 
-	AIPerceptionComponent->OnPerceptionUpdated.AddDynamic(this, &AAIC_Base::OnPerceptionUpdated);
+	AIPerceptionComponent->OnPerceptionUpdated.AddDynamic(this, &AAIC_MonsterBase::OnPerceptionUpdated);
 }
 
-void AAIC_Base::OnPossess(APawn* InPawn)
+void AAIC_MonsterBase::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
@@ -43,7 +43,7 @@ void AAIC_Base::OnPossess(APawn* InPawn)
 	}
 }
 
-void AAIC_Base::SetStateAsAttacking(AActor* ATarget, bool useLastKnownAttackTarget)
+void AAIC_MonsterBase::SetStateAsAttacking(AActor* ATarget, bool useLastKnownAttackTarget)
 {
 	AActor* NewAttackTarget;
 	//이전 Target이 있으면
@@ -60,12 +60,12 @@ void AAIC_Base::SetStateAsAttacking(AActor* ATarget, bool useLastKnownAttackTarg
 	AttackTarget = NewAttackTarget;
 }
 
-void AAIC_Base::SetStateAsHell()
+void AAIC_MonsterBase::SetStateAsHell()
 {
 	GetBlackboardComponent()->SetValueAsObject(FName("TargetActor"), nullptr);
 }
 
-void AAIC_Base::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
+void AAIC_MonsterBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
 	if (UpdatedActors.Num() > 0)
 	{
