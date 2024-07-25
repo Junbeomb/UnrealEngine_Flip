@@ -7,20 +7,26 @@
 
 UBTD_CalcDistance::UBTD_CalcDistance()
 {
-	errorMargin = 50.f;
+	errorMargin = 10.f;
 }
 
 bool UBTD_CalcDistance::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
 
-	AActor* TargetActor = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(Target->SelectedKeyName));
+	AActor* TargetActor = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(Target.SelectedKeyName));
 	
-	float distance = TargetActor->GetDistanceTo(OwnerComp.GetAIOwner()->GetPawn());
-	distance -= errorMargin;
+	if (TargetActor) {
+		float distance = TargetActor->GetDistanceTo(OwnerComp.GetAIOwner()->GetPawn());
+		//distance -= errorMargin;
 
-	float IdealDistance = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(IdealRange->SelectedKeyName);
-		
-	return distance <= IdealDistance;
+		float IdealDistance = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(AttackRange.SelectedKeyName);
+		UE_LOG(LogTemp, Warning, TEXT("Distance : %f"),distance);
+		UE_LOG(LogTemp, Warning, TEXT("Ideal Distance : %f"),IdealDistance);
+		return distance <= IdealDistance;
+	}
+	
+	UE_LOG(LogTemp, Warning, TEXT("Distance Over"));
+	return false;
 }
 
 

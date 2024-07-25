@@ -41,6 +41,9 @@ void AAIC_MonsterBase::OnPossess(APawn* InPawn)
 	if (IsValid(BMonster->BehaviorTree)) {
 		RunBehaviorTree(BMonster->BehaviorTree);
 	}
+
+	GetBlackboardComponent()->SetValueAsFloat(FName("AttackRange"), 300.f);
+
 }
 
 void AAIC_MonsterBase::SetStateAsAttacking(AActor* ATarget, bool useLastKnownAttackTarget)

@@ -19,11 +19,14 @@ class FLIP_API UBTD_CalcDistance : public UBTDecorator
 public:
 	UBTD_CalcDistance();
 
-	FBlackboardKeySelector* Target;// 鸥百 竣磐
+	UPROPERTY(EditAnywhere)
+	FBlackboardKeySelector Target;// 鸥百 竣磐
 
-	FBlackboardKeySelector* IdealRange; //利沥 芭府
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere)
+	FBlackboardKeySelector AttackRange; //利沥 芭府
+
+	UPROPERTY(EditAnywhere)
 	float errorMargin;
 
 };

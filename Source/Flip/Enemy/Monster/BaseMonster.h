@@ -4,14 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+#include "../EnemyBase.h"
+
 #include "BaseMonster.generated.h"
 
+
 UCLASS()
-class FLIP_API ABaseMonster : public ACharacter
+class FLIP_API ABaseMonster : public AEnemyBase
 {
 	GENERATED_BODY()
 
 	class UCharacterMovementComponent* MovementComponent;
+
+public://basic command
+
+	virtual void BasicAttack() override;
 
 private://AI
 

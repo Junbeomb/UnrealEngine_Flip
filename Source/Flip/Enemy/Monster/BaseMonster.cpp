@@ -71,6 +71,11 @@ void ABaseMonster::BeginPlay()
 
 }
 
+void ABaseMonster::BasicAttack() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("BasicAttack!!!!!"));
+}
+
 void ABaseMonster::ReverseStart()
 {
 	MovementComponent->GravityScale = 0.f;
