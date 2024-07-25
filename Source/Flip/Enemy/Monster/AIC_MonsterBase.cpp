@@ -13,7 +13,7 @@
 
 
 #include "BaseMonster.h"
-#include "Hero/FlipCharacter.h"
+#include "../../Hero/FlipCharacter.h"
 
 
 AAIC_MonsterBase::AAIC_MonsterBase() {

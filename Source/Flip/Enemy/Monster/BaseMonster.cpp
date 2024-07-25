@@ -8,15 +8,15 @@
 
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 
-#include "System/ReverseCenter.h"
-#include "System/ReverseFloor.h"
+#include "../../System/ReverseCenter.h"
+#include "../../System/ReverseFloor.h"
 
 #include "AIC_MonsterBase.h"
 #include "AIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-#include "BaseGhost.h"
+#include "../Ghost/BaseGhost.h"
 
 
 // Sets default values
@@ -31,6 +31,8 @@ ABaseMonster::ABaseMonster()
 	MovementComponent->SetGravityDirection({ 0, 0,-1 });
 	MovementComponent->bUseControllerDesiredRotation = true;
 	MovementComponent->MaxWalkSpeed = 200.f;
+
+
 }
 
 // Called when the game starts or when spawned
@@ -60,11 +62,13 @@ void ABaseMonster::BeginPlay()
 	}
 
 	//aicontroller ¼³Á¤
-	if (AIControllerChoice) {
-		AIC_Base = Cast<AAIC_MonsterBase>(AIControllerChoice);
-		AIControllerClass = AIControllerChoice;
-		AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-	}
+	//if (AIControllerChoice) {
+	//	UE_LOG(LogTemp, Warning, TEXT("123"));
+	//	AIC_Base = Cast<AAIC_MonsterBase>(AIControllerChoice);
+	//	AIControllerClass = AIControllerChoice;
+	//	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	//}
+
 }
 
 void ABaseMonster::ReverseStart()

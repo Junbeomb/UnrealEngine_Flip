@@ -16,8 +16,10 @@ class FLIP_API AAIC_MonsterBase : public AAIController
 
 	UPROPERTY()
 	AActor* AttackTarget;
+
 	UPROPERTY()
 	class UAIPerceptionComponent* AIPerceptionComponent;
+
 	UPROPERTY()
 	class UAISenseConfig_Sight* SightConfig;
 

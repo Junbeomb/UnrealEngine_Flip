@@ -12,7 +12,7 @@
 #include "Perception/AISense_Sight.h"
 
 #include "BaseGhost.h"
-#include "Hero/FlipCharacter.h"
+#include "../../Hero/FlipCharacter.h"
 
 
 AAIC_GhostBase::AAIC_GhostBase() {

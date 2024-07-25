@@ -15,15 +15,15 @@ class FLIP_API ABaseMonster : public ACharacter
 
 private://AI
 
-	class AAIC_MonsterBase* AIC_Base;
+	//class AAIC_MonsterBase* AIC_Base;
 
 public://AI
 
 	UPROPERTY(EditAnywhere)
 	class UBehaviorTree* BehaviorTree;
 
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AAIController> AIControllerChoice;
+	//UPROPERTY(EditAnywhere)
+	//TSubclassOf<class AAIController> AIControllerChoice;
 
 private: //Reverse
 	class AReverseCenter* RCenter;

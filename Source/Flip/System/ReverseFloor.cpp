@@ -10,7 +10,7 @@
 
 #include "ReverseCenter.h"
 
-#include "../BaseGhost.h"
+#include "../Enemy/Ghost/BaseGhost.h"
 
 
 AReverseFloor::AReverseFloor()

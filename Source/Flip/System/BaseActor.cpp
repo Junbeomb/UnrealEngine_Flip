@@ -2,8 +2,8 @@
 
 
 #include "BaseActor.h"
-#include "System/ReverseCenter.h"
-#include "System/ReverseFloor.h"
+#include "ReverseCenter.h"
+#include "ReverseFloor.h"
 
 // Sets default values
 ABaseActor::ABaseActor()

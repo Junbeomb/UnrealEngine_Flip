@@ -6,8 +6,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Math/UnrealMathUtility.h"
 
-#include "System/ReverseCenter.h"
-#include "System/ReverseFloor.h"
+#include "../../System/ReverseCenter.h"
+#include "../../System/ReverseFloor.h"
 
 #include "AIC_GhostBase.h"
 #include "AIController.h"
@@ -15,7 +15,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 
 
-#include "BaseMonster.h"
+#include "../Monster/BaseMonster.h"
 
 ABaseGhost::ABaseGhost()
 {
