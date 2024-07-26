@@ -74,6 +74,29 @@ void AFlipCharacter::CallD_Reverse()
 	RCenter->CallReverse();
 }
 
+
+
+void AFlipCharacter::BasicAttack()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Player BasicAttack"));
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); //캐릭터에 애니메이션 blueprint가 설정되어 있어야 한다.
+	if (AnimInstance && BasicAttackMontage) {
+		AnimInstance->Montage_SetPlayRate(BasicAttackMontage,2.f);
+		AnimInstance->Montage_Play(BasicAttackMontage);
+		//notify 가 시작되었을 때
+		AnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &AFlipCharacter::OnNotifyEndAttack);
+	}
+}
+
+void AFlipCharacter::OnNotifyEndAttack(FName NotifyName, const FBranchingPointNotifyPayload& BranchingPointNotifyPayload)
+{
+	if (NotifyName == "EndAttack") {
+		D_AttackEnd.Execute();
+		UE_LOG(LogTemp, Warning, TEXT("Player BasicAttack End!!!!!!!!"));
+	}
+}
+
 void AFlipCharacter::ReverseStart()
 {
 	HeroState = EHeroStatus::Reversing;

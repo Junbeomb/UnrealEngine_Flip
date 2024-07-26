@@ -9,6 +9,7 @@
 
 #include "FlipCharacter.generated.h"
 
+DECLARE_DELEGATE(FD_AttackEnd);
 
 UCLASS(Blueprintable)
 class AFlipCharacter : public ACharacter
@@ -19,7 +20,24 @@ class AFlipCharacter : public ACharacter
 
 	class AReverseCenter* RCenter;
 
-public:
+public://Animation
+	FD_AttackEnd D_AttackEnd;
+
+private: // Animation
+
+	UPROPERTY(EditAnywhere)
+	class UAnimMontage* BasicAttackMontage;
+
+	UFUNCTION()
+	void OnNotifyEndAttack(FName NotifyName, const FBranchingPointNotifyPayload& BranchingPointNotifyPayload);
+
+
+public://Attack
+
+	UFUNCTION()
+	void BasicAttack();
+
+public://Reverse
 	UFUNCTION()
 	void ReverseStart();
 	UFUNCTION()

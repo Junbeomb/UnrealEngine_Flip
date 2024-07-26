@@ -19,7 +19,7 @@ AEnemyBase::AEnemyBase()
 void AEnemyBase::BasicAttack()
 {
 
-	UE_LOG(LogTemp, Warning, TEXT("BasicAttack _Parent!!!!!"));
+	//UE_LOG(LogTemp, Warning, TEXT("BasicAttack _Parent!!!!!"));
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); //캐릭터에 애니메이션 blueprint가 설정되어 있어야 한다.
 
 	if (AnimInstance && BasicAttackMontage) {

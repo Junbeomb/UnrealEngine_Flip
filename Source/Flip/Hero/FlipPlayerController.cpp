@@ -19,10 +19,22 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 AFlipPlayerController::AFlipPlayerController()
 {
 
+	
+
+	//마우스 화면 밖으로 안벗어나게
+	//FInputModeGameAndUI InputMode;
+	//InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways);
+	//SetInputMode(InputMode);
+
 	bShowMouseCursor = false;
+	//마우스 커서 모양
 	DefaultMouseCursor = EMouseCursor::Default;
+
 	CachedDestination = FVector::ZeroVector;
 	FollowTime = 0.f;
+
+	//이동 제한
+	restrictMove = false;
 }
 
 void AFlipPlayerController::BeginPlay()
@@ -70,6 +82,8 @@ void AFlipPlayerController::SetupInputComponent()
 
 void AFlipPlayerController::Move(const FInputActionValue& Value)
 {
+	if (restrictMove) return;
+
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 	// find out which way is forward
@@ -107,18 +121,17 @@ void AFlipPlayerController::OnInputStarted()
 // Triggered every frame when the input is held down
 void AFlipPlayerController::OnSetDestinationTriggered()
 {
-	// We flag that the input is being pressed
+	if (restrictMove) return;
+
 	FollowTime += GetWorld()->GetDeltaSeconds();
 	
-	// We look for the location in the world where the player has pressed the input
 	FHitResult Hit;
 	bool bHitSuccessful = false;
 
 	bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
 
-	// If we hit a surface, cache the location
-	if (bHitSuccessful)
-	{
+	if (bHitSuccessful){
+
 		FVector Direction = Hit.Location - ControlledPawn->GetActorLocation();
 		Direction.Z = 0;
 		Direction.Normalize();
@@ -127,6 +140,12 @@ void AFlipPlayerController::OnSetDestinationTriggered()
 		FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, GetWorld()->GetDeltaSeconds(), 10.f); // 5.0f is the interpolation speed
 		ControlledPawn->SetActorRotation(TargetRotation);
 		//ControlledPawn->AddActorLocalRotation(TargetRotation);
+
+		restrictMove = true;
+		FlipCharacter->BasicAttack();
+		FlipCharacter->D_AttackEnd.BindLambda([this]() {
+			restrictMove = false;
+			});
 
 		CachedDestination = Hit.Location;
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
