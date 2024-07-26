@@ -16,6 +16,8 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
+
+
 #include "../Ghost/BaseGhost.h"
 
 
@@ -73,7 +75,7 @@ void ABaseMonster::BeginPlay()
 
 void ABaseMonster::BasicAttack() 
 {
-	UE_LOG(LogTemp, Warning, TEXT("BasicAttack!!!!!"));
+	Super::BasicAttack();
 }
 
 void ABaseMonster::ReverseStart()

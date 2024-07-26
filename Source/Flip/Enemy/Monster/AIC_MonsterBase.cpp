@@ -42,7 +42,7 @@ void AAIC_MonsterBase::OnPossess(APawn* InPawn)
 		RunBehaviorTree(BMonster->BehaviorTree);
 	}
 
-	GetBlackboardComponent()->SetValueAsFloat(FName("AttackRange"), 300.f);
+	GetBlackboardComponent()->SetValueAsFloat(FName("DistanceToAttackTarget"), 201.f);
 
 }
 

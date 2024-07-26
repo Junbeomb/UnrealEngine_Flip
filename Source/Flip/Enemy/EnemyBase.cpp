@@ -3,6 +3,11 @@
 
 #include "EnemyBase.h"
 
+#include "Animation/AnimInstance.h"
+#include "Animation/AnimMontage.h"
+
+
+
 // Sets default values
 AEnemyBase::AEnemyBase()
 {
@@ -14,21 +19,32 @@ AEnemyBase::AEnemyBase()
 void AEnemyBase::BasicAttack()
 {
 
+	UE_LOG(LogTemp, Warning, TEXT("BasicAttack _Parent!!!!!"));
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); //캐릭터에 애니메이션 blueprint가 설정되어 있어야 한다.
+
+	if (AnimInstance && BasicAttackMontage) {
+		AnimInstance->Montage_Play(BasicAttackMontage);
+		// Montage 종료 시 호출되는 델리게이트에 함수 바인딩
+		FOnMontageEnded EndDelegate;
+		EndDelegate.BindLambda([this](UAnimMontage* Montage, bool bInterrupted) {
+			D_AttackEnd.Execute();
+		});
+		AnimInstance->Montage_SetEndDelegate(EndDelegate, BasicAttackMontage);
+		//notify 가 시작되었을 때
+		//AnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &AEnemyBase::OnNotifyBossCombo1);
+	}
 }
 
-// Called when the game starts or when spawned
 void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-// Called every frame
 void AEnemyBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-// Called to bind functionality to input
 void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);

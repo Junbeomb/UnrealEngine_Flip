@@ -6,10 +6,22 @@
 #include "GameFramework/Character.h"
 #include "EnemyBase.generated.h"
 
+DECLARE_DELEGATE(FD_AttackEnd);
 UCLASS()
+
 class FLIP_API AEnemyBase : public ACharacter
 {
 	GENERATED_BODY()
+
+
+private: // Animation
+
+	UPROPERTY(EditAnywhere)
+	class UAnimMontage* BasicAttackMontage;
+
+public: //Animation
+
+	FD_AttackEnd D_AttackEnd;
 
 public:
 	AEnemyBase();
