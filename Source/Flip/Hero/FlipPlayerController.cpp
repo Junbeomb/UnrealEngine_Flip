@@ -19,14 +19,12 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 AFlipPlayerController::AFlipPlayerController()
 {
 
-	
-
 	//마우스 화면 밖으로 안벗어나게
 	//FInputModeGameAndUI InputMode;
 	//InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways);
 	//SetInputMode(InputMode);
 
-	bShowMouseCursor = false;
+
 	//마우스 커서 모양
 	DefaultMouseCursor = EMouseCursor::Default;
 
@@ -44,7 +42,8 @@ void AFlipPlayerController::BeginPlay()
 
 	ControlledPawn = GetPawn();
 	FlipCharacter = Cast<AFlipCharacter>(ControlledPawn);
-
+	//마우스 커서
+	bShowMouseCursor = true;
 }
 
 void AFlipPlayerController::SetupInputComponent()
@@ -141,11 +140,9 @@ void AFlipPlayerController::OnSetDestinationTriggered()
 		ControlledPawn->SetActorRotation(TargetRotation);
 		//ControlledPawn->AddActorLocalRotation(TargetRotation);
 
-		restrictMove = true;
 		FlipCharacter->BasicAttack();
-		FlipCharacter->D_AttackEnd.BindLambda([this]() {
-			restrictMove = false;
-			});
+		//FlipCharacter->D_AttackEnd.BindLambda([this]() {
+		//	});
 
 		CachedDestination = Hit.Location;
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);

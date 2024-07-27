@@ -20,17 +20,27 @@ class AFlipCharacter : public ACharacter
 
 	class AReverseCenter* RCenter;
 
+private://Controller
+	UPROPERTY()
+	class AFlipPlayerController* FlipPlayerController;
+
+
 public://Animation
 	FD_AttackEnd D_AttackEnd;
+
 
 private: // Animation
 
 	UPROPERTY(EditAnywhere)
 	class UAnimMontage* BasicAttackMontage;
 
+	UPROPERTY()
+	UAnimInstance* AnimInstance;
+
 	UFUNCTION()
 	void OnNotifyEndAttack(FName NotifyName, const FBranchingPointNotifyPayload& BranchingPointNotifyPayload);
 
+	
 
 public://Attack
 
