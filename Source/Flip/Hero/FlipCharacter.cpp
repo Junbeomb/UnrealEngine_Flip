@@ -52,6 +52,7 @@ AFlipCharacter::AFlipCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
+	
 
 }
 
@@ -68,8 +69,11 @@ void AFlipCharacter::BeginPlay()
 
 	//Animation
 	AnimInstance = GetMesh()->GetAnimInstance(); //캐릭터에 애니메이션 blueprint가 설정되어 있어야 한다.
+	if (!AnimInstance->OnPlayMontageNotifyBegin.IsAlreadyBound(this, &AFlipCharacter::OnNotifyBegin)) {
+		//UE_LOG(LogTemp, Warning, TEXT("Notify Bound!!!!"));
+		AnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &AFlipCharacter::OnNotifyBegin);
+	}
 	FlipPlayerController = Cast<AFlipPlayerController>(GetController());
-
 }
 
 void AFlipCharacter::Tick(float DeltaSeconds)
@@ -87,28 +91,53 @@ void AFlipCharacter::CallD_Reverse()
 
 void AFlipCharacter::BasicAttack()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Player BasicAttack Continue!!!!!!!! : %d"), IsStopAttack);
+	//이미 플레이 중이면
+	if (AnimInstance->Montage_IsPlaying(BasicAttackMontage)) {
+		//콤보 공격 연장
+		if (IsStopAttack) {
+			
+			IsStopAttack = false;
+		}
+
+		return;
+	}
 
 	if (AnimInstance && BasicAttackMontage) {
 		FlipPlayerController->restrictMove = true;
 
 		AnimInstance->Montage_Stop(0.1);
 
-		AnimInstance->Montage_SetPlayRate(BasicAttackMontage,2.f);
+		AnimInstance->Montage_SetPlayRate(BasicAttackMontage,1.f);
 		AnimInstance->Montage_Play(BasicAttackMontage);
-		if (!AnimInstance->OnPlayMontageNotifyBegin.IsAlreadyBound(this, &AFlipCharacter::OnNotifyEndAttack)) {
-			//UE_LOG(LogTemp, Warning, TEXT("Notify Bound!!!!"));
-			AnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &AFlipCharacter::OnNotifyEndAttack);
-		}
 	}
 }
 
-void AFlipCharacter::OnNotifyEndAttack(FName NotifyName, const FBranchingPointNotifyPayload& BranchingPointNotifyPayload)
+void AFlipCharacter::OnNotifyBegin(FName NotifyName, const FBranchingPointNotifyPayload& BranchingPointNotifyPayload)
 {
-	if (NotifyName == "EndAttack") {
+	if (NotifyName == "StartAttack") {
+		IsStopAttack = true;
+	}
+	else if (NotifyName == "S_Combo") {
+
+	}
+	else if (NotifyName == "E_Combo") {
+		if (IsStopAttack) {
+			AnimInstance->Montage_Stop(0.0f);
+			FlipPlayerController->restrictMove = false;
+			UE_LOG(LogTemp, Warning, TEXT("Player BasicAttack End!!!!!!!!"));
+		}
+		else {
+			
+			IsStopAttack = true;
+		}
+	}
+	else if (NotifyName == "EndAttack") {
 		//D_AttackEnd.Execute();
 		FlipPlayerController->restrictMove = false;
-		UE_LOG(LogTemp, Warning, TEXT("Player BasicAttack End!!!!!!!!"));
+		//UE_LOG(LogTemp, Warning, TEXT("Player BasicAttack End!!!!!!!!"));
 	}
+	
 }
 
 

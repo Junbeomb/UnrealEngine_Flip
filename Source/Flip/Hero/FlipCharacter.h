@@ -33,12 +33,14 @@ private: // Animation
 
 	UPROPERTY(EditAnywhere)
 	class UAnimMontage* BasicAttackMontage;
+	UPROPERTY()
+	bool IsStopAttack;
 
 	UPROPERTY()
 	UAnimInstance* AnimInstance;
 
 	UFUNCTION()
-	void OnNotifyEndAttack(FName NotifyName, const FBranchingPointNotifyPayload& BranchingPointNotifyPayload);
+	void OnNotifyBegin(FName NotifyName, const FBranchingPointNotifyPayload& BranchingPointNotifyPayload);
 
 	
 

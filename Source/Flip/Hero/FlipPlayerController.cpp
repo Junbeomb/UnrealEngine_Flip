@@ -61,10 +61,10 @@ void AFlipPlayerController::SetupInputComponent()
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		// Setup mouse input events
-		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Started, this, &AFlipPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Triggered, this, &AFlipPlayerController::OnSetDestinationTriggered);
-		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Completed, this, &AFlipPlayerController::OnSetDestinationReleased);
-		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Canceled, this, &AFlipPlayerController::OnSetDestinationReleased);
+		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Started, this, &AFlipPlayerController::OnSetDestinationTriggered);
+		//EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Triggered, this, &AFlipPlayerController::OnSetDestinationTriggered);
+		//EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Completed, this, &AFlipPlayerController::OnSetDestinationReleased);
+		//EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Canceled, this, &AFlipPlayerController::OnSetDestinationReleased);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AFlipPlayerController::Move);
@@ -120,8 +120,6 @@ void AFlipPlayerController::OnInputStarted()
 // Triggered every frame when the input is held down
 void AFlipPlayerController::OnSetDestinationTriggered()
 {
-	if (restrictMove) return;
-
 	FollowTime += GetWorld()->GetDeltaSeconds();
 	
 	FHitResult Hit;
