@@ -12,7 +12,8 @@
 
 #include "Materials/Material.h"
 #include "Engine/World.h"
-
+#include "../System/HitBox.h"
+#include "DrawDebugHelpers.h"
 
 #include "../System/ReverseCenter.h"
 #include "FlipPlayerController.h"
@@ -99,15 +100,43 @@ void AFlipCharacter::BasicAttack()
 			
 			IsStopAttack = false;
 		}
-
 		return;
 	}
 
 	if (AnimInstance && BasicAttackMontage) {
 		FlipPlayerController->restrictMove = true;
 
-		AnimInstance->Montage_Stop(0.1);
+		//HItBox 생성
+		FVector Loc = GetActorLocation() + GetActorForwardVector() * 100;
+		/*FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = GetInstigator(); 
+		GetWorld()->SpawnActor<AHitBox>(AHitBox::StaticClass(), Loc, {0,0,0}, SpawnParams);*/
 
+		FHitResult HitResult;
+		FCollisionQueryParams CollisionParams;
+		CollisionParams.AddIgnoredActor(this); // 자기 자신은 무시합니다.
+
+		// Sphere Trace 수행
+		bool bHit = GetWorld()->SweepSingleByChannel(
+			HitResult,               
+			GetActorLocation(),                     // 시작 위치
+			Loc,                       // 끝 위치
+			FQuat::Identity,           // 회전 (구체이므로 회전은 필요 없음)
+			ECC_Visibility,            
+			FCollisionShape::MakeSphere(80.f), 
+			CollisionParams            
+		);
+
+		// 디버그용 스피어와 라인을 그려 시각적으로 확인
+		DrawDebugLine(GetWorld(), GetActorLocation(), Loc, FColor::Blue, false, 2.0f, 0, 1.0f);
+		DrawDebugSphere(GetWorld(), Loc, 80.f, 12, FColor::Green, false, 2.0f); 
+		if (bHit) {
+			//UE_LOG(LogTemp, Warning, TEXT("%s"), *HitResult.GetActor()->GetName());
+			DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 20.f, 12, FColor::Red, false, 2.0f);
+		}
+
+		AnimInstance->Montage_Stop(0.1);
 		AnimInstance->Montage_SetPlayRate(BasicAttackMontage,1.f);
 		AnimInstance->Montage_Play(BasicAttackMontage);
 	}
@@ -151,7 +180,7 @@ void AFlipCharacter::ReverseStart()
 	GetCharacterMovement()->SetMovementMode(MOVE_Flying);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	UE_LOG(LogTemp, Warning, TEXT("FlipCharacter : CallD_Reverse "));
+	//UE_LOG(LogTemp, Warning, TEXT("FlipCharacter : CallD_Reverse "));
 }
 
 void AFlipCharacter::ReverseEnd()
@@ -159,5 +188,5 @@ void AFlipCharacter::ReverseEnd()
 	GetCharacterMovement()->GravityScale = 1.0f;
 	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	UE_LOG(LogTemp, Warning, TEXT("FlipCharacter : ReverseEnd"));
+	//UE_LOG(LogTemp, Warning, TEXT("FlipCharacter : ReverseEnd"));
 }
