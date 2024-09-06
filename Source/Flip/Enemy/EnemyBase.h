@@ -19,6 +19,9 @@ private: // Animation
 	UPROPERTY(EditAnywhere)
 	class UAnimMontage* BasicAttackMontage;
 
+	UPROPERTY()
+	class UComp_Damageable* Comp_Damage;
+
 public: //Animation
 
 	FD_AttackEnd D_AttackEnd;

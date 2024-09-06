@@ -17,6 +17,7 @@
 
 #include "../System/ReverseCenter.h"
 #include "FlipPlayerController.h"
+#include "../System/Comp_Damageable.h"
 
 
 
@@ -106,33 +107,30 @@ void AFlipCharacter::BasicAttack()
 	if (AnimInstance && BasicAttackMontage) {
 		FlipPlayerController->restrictMove = true;
 
-		//HItBox 생성
+		//HitBox 생성
 		FVector Loc = GetActorLocation() + GetActorForwardVector() * 100;
-		/*FActorSpawnParameters SpawnParams;
-		SpawnParams.Owner = this;
-		SpawnParams.Instigator = GetInstigator(); 
-		GetWorld()->SpawnActor<AHitBox>(AHitBox::StaticClass(), Loc, {0,0,0}, SpawnParams);*/
-
 		FHitResult HitResult;
 		FCollisionQueryParams CollisionParams;
-		CollisionParams.AddIgnoredActor(this); // 자기 자신은 무시합니다.
-
-		// Sphere Trace 수행
+		CollisionParams.AddIgnoredActor(this); 
 		bool bHit = GetWorld()->SweepSingleByChannel(
 			HitResult,               
-			GetActorLocation(),                     // 시작 위치
-			Loc,                       // 끝 위치
-			FQuat::Identity,           // 회전 (구체이므로 회전은 필요 없음)
+			GetActorLocation(),                     
+			Loc,                
+			FQuat::Identity,  // 회전 (구체이므로 회전은 필요 없음)
 			ECC_Visibility,            
 			FCollisionShape::MakeSphere(80.f), 
 			CollisionParams            
 		);
-
-		// 디버그용 스피어와 라인을 그려 시각적으로 확인
 		DrawDebugLine(GetWorld(), GetActorLocation(), Loc, FColor::Blue, false, 2.0f, 0, 1.0f);
 		DrawDebugSphere(GetWorld(), Loc, 80.f, 12, FColor::Green, false, 2.0f); 
-		if (bHit) {
-			//UE_LOG(LogTemp, Warning, TEXT("%s"), *HitResult.GetActor()->GetName());
+
+		if (bHit && HitResult.GetActor()->GetComponentByClass(UComp_Damageable::StaticClass())) {
+			bool IsDie = Cast<UComp_Damageable>(HitResult.GetActor()->GetComponentByClass(UComp_Damageable::StaticClass()))->DamagedActor(50.f);
+
+			if (IsDie) {
+
+				UE_LOG(LogTemp, Warning, TEXT("Die!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"));
+			}
 			DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 20.f, 12, FColor::Red, false, 2.0f);
 		}
 

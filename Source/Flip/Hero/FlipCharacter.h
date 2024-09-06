@@ -20,6 +20,9 @@ class AFlipCharacter : public ACharacter
 
 	class AReverseCenter* RCenter;
 
+	UPROPERTY()
+	class UComp_Damageable* Comp_Damage;
+
 private://Controller
 	UPROPERTY()
 	class AFlipPlayerController* FlipPlayerController;
